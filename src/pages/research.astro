@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+import MediaFigure from "@/components/MediaFigure.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import ProjectEntry from "@/components/ProjectEntry.astro";
+import ResearchAreaEntry from "@/components/ResearchAreaEntry.astro";
+import { media } from "@/data/media";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const researchAreas = (await getCollection("research", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+);
+const relatedProjects = (
+  await getCollection("projects", ({ data }) => !data.draft && data.featured)
+).sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout
+  title="Research"
+  description="Research on human-centered data discovery, table unionability, collaborative intelligence, and metacognitive signals."
+>
+  <PageHeader
+    eyebrow="Research"
+    title="Human-centered data discovery"
+    description="I study how human judgments, behavioral signals, machine learning, and large language models can support more reliable data discovery and integration."
+  />
+
+  <section class="page-section" aria-labelledby="research-areas">
+    <div class="layout-container">
+      <p class="eyebrow">Areas of inquiry</p>
+      <h2 id="research-areas" class="section-title">Research areas</h2>
+      {researchAreas.map((entry) => <ResearchAreaEntry entry={entry} />)}
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="research-in-practice">
+    <div class="layout-container">
+      <div class="section-copy">
+        <p class="eyebrow">Research in practice</p>
+        <h2 id="research-in-practice">Presentations and academic events</h2>
+        <p>Selected moments from research presentations, conferences, and academic milestones.</p>
+      </div>
+      <div class="research-gallery">
+        {media.research.map((image) => <MediaFigure image={image} />)}
+      </div>
+    </div>
+  </section>
+
+  {
+    relatedProjects.length > 0 && (
+      <section class="page-section" aria-labelledby="related-projects">
+        <div class="layout-container">
+          <p class="eyebrow">Current work</p>
+          <h2 id="related-projects" class="section-title">Related project</h2>
+          <div class="related-project">
+            {relatedProjects.map((entry) => <ProjectEntry entry={entry} headingLevel="h3" />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .section-title,
+  .section-copy {
+    margin-bottom: var(--space-6);
+  }
+
+  .section-copy {
+    max-width: var(--content-narrow);
+  }
+
+  .research-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-5);
+  }
+
+  .research-gallery :global(.media-figure:first-child) {
+    grid-column: 1 / -1;
+  }
+
+  .research-gallery :global(.media-figure:last-child) {
+    grid-column: 1 / -1;
+  }
+
+  .related-project {
+    max-width: 52rem;
+  }
+
+  @media (max-width: 42rem) {
+    .research-gallery {
+      grid-template-columns: 1fr;
+    }
+
+    .research-gallery :global(.media-figure:first-child),
+    .research-gallery :global(.media-figure:last-child) {
+      grid-column: auto;
+    }
+  }
+</style>

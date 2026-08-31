@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import TagList from "@/components/TagList.astro";
+
+interface Props {
+  entry: CollectionEntry<"research">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<article class="research-area">
+  <h3>{entry.data.title}</h3>
+  <p class="research-area__summary">{entry.data.summary}</p>
+  <div class="research-area__body">
+    <Content />
+  </div>
+  <TagList items={entry.data.topics} />
+</article>
+
+<style>
+  .research-area {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.65fr) minmax(0, 1.35fr);
+    gap: 0 var(--space-7);
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .research-area:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .research-area h3 {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+
+  .research-area__summary,
+  .research-area__body,
+  .research-area :global(.tag-list) {
+    grid-column: 2;
+  }
+
+  .research-area__summary {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .research-area__body :global(> :last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 42rem) {
+    .research-area {
+      display: block;
+    }
+  }
+</style>

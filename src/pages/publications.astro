@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import PageHeader from "@/components/PageHeader.astro";
+import PublicationEntry from "@/components/PublicationEntry.astro";
+import { siteConfig } from "@/config/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const publications = (await getCollection("publications", ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    b.data.year - a.data.year ||
+    a.data.order - b.data.order ||
+    a.data.title.localeCompare(b.data.title),
+);
+const scholarUrl = siteConfig.socialLinks.find((link) => link.label === "Google Scholar")?.url;
+---
+
+<BaseLayout
+  title="Publications"
+  description="Publications by Nina Klimenkova on table unionability, data discovery, human–AI collaboration, and related data-science topics."
+>
+  <PageHeader
+    eyebrow="Scholarly work"
+    title="Publications"
+  />
+
+  <section class="page-section" aria-labelledby="publication-list">
+    <div class="layout-container publication-list">
+      <div class="publication-list__intro">
+        {scholarUrl && <a href={scholarUrl}>View Google Scholar profile</a>}
+      </div>
+      <h2 id="publication-list" class="visually-hidden">Publication list</h2>
+      {publications.map((entry) => <PublicationEntry entry={entry} headingLevel="h3" />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .publication-list {
+    max-width: 64rem;
+  }
+
+  .publication-list__intro {
+    margin-bottom: var(--space-6);
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import TagList from "@/components/TagList.astro";
+import { withBase } from "@/utils/urls";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+  headingLevel?: "h2" | "h3";
+}
+
+const { entry, headingLevel = "h2" } = Astro.props;
+const { Content } = await render(entry);
+const Heading = headingLevel;
+const statusLabel = entry.data.status.replace("-", " ");
+const formatYear = (date: Date) =>
+  new Intl.DateTimeFormat("en", { year: "numeric", timeZone: "UTC" }).format(date);
+const derivedDateRange = entry.data.startDate
+  ? `${formatYear(entry.data.startDate)}–${entry.data.endDate ? formatYear(entry.data.endDate) : "present"}`
+  : undefined;
+const dateRange = entry.data.period ?? derivedDateRange;
+
+function resolveHref(href: string): string {
+  return /^https?:\/\//.test(href) ? href : withBase(href);
+}
+---
+
+<article class="project-entry">
+  <div class="project-entry__meta">
+    <span class="status-badge">{statusLabel}</span>
+    {dateRange && <span>{dateRange}</span>}
+  </div>
+
+  <Heading>{entry.data.title}</Heading>
+  <p class="project-entry__summary">{entry.data.summary}</p>
+
+  <div class="entry-body">
+    <Content />
+  </div>
+
+  <TagList items={entry.data.topics} />
+
+  {
+    (entry.data.url || entry.data.repository) && (
+      <ul class="entry-links" aria-label={`Links for ${entry.data.title}`}>
+        {entry.data.url && (
+          <li>
+            <a href={resolveHref(entry.data.url)}>Link to paper publication</a>
+          </li>
+        )}
+        {entry.data.repository && (
+          <li>
+            <a href={resolveHref(entry.data.repository)}>Repository</a>
+          </li>
+        )}
+      </ul>
+    )
+  }
+</article>
+
+<style>
+  .project-entry {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .project-entry__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .status-badge {
+    padding: var(--space-1) var(--space-2);
+    border-radius: 999px;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-strong);
+    font-weight: 700;
+  }
+
+  .project-entry h2,
+  .project-entry h3 {
+    margin-bottom: var(--space-3);
+  }
+
+  .project-entry__summary {
+    color: var(--color-text-muted);
+  }
+
+  .entry-body {
+    margin-top: var(--space-4);
+  }
+
+  .entry-body :global(> :last-child) {
+    margin-bottom: 0;
+  }
+
+  .entry-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+</style>

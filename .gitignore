@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# Astro build output and generated types
+dist/
+.astro/
+
+# local environment variables
+.env
+.env.*
+!.env.example
+
+# editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# logs
+*.log
+npm-debug.log*
+
+# local source-processing and visual-verification files
+/tmp/

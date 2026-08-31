@@ -1,0 +1,168 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { siteConfig } from "@/config/site";
+import { withBase } from "@/utils/urls";
+
+interface Props {
+  entry: CollectionEntry<"publications">;
+  headingLevel?: "h2" | "h3";
+}
+
+const { entry, headingLevel = "h2" } = Astro.props;
+const { Content } = await render(entry);
+const Heading = headingLevel;
+
+const typeLabels: Record<CollectionEntry<"publications">["data"]["publicationType"], string> = {
+  "journal-article": "Journal article",
+  "conference-paper": "Conference paper",
+  "book-chapter": "Book chapter",
+  thesis: "Thesis",
+  preprint: "Preprint",
+  report: "Report",
+  manuscript: "Manuscript",
+  other: "Other",
+};
+
+const doiHref = entry.data.doi
+  ? entry.data.doi.startsWith("http")
+    ? entry.data.doi
+    : `https://doi.org/${entry.data.doi}`
+  : undefined;
+const ownerSurname = siteConfig.name.split(/\s+/).at(-1)?.toLocaleLowerCase("en") ?? "";
+
+function isSiteOwner(author: string): boolean {
+  return ownerSurname.length > 0 && author.toLocaleLowerCase("en").includes(ownerSurname);
+}
+
+const citationDetails = [
+  entry.data.volume ? `vol. ${entry.data.volume}` : undefined,
+  entry.data.issue ? `no. ${entry.data.issue}` : undefined,
+  entry.data.pages ? `pp. ${entry.data.pages}` : undefined,
+  entry.data.articleNumber ? `article ${entry.data.articleNumber}` : undefined,
+].filter(Boolean).join(", ");
+
+function resolveHref(href: string): string {
+  return /^https?:\/\//.test(href) ? href : withBase(href);
+}
+---
+
+<article class="publication-entry">
+  <div class="publication-entry__meta">
+    <span>{entry.data.year}</span>
+    <span>{typeLabels[entry.data.publicationType]}</span>
+    {entry.data.status && <span>{entry.data.status.replace("-", " ")}</span>}
+  </div>
+
+  <Heading>{entry.data.title}</Heading>
+  <p class="publication-entry__authors">
+    {
+      entry.data.authors.map((author, index) => (
+        <>
+          {isSiteOwner(author) ? <strong>{author}</strong> : author}
+          {index < entry.data.authors.length - 1 ? ", " : ""}
+        </>
+      ))
+    }
+  </p>
+  {
+    entry.data.venue && (
+      <p class="publication-entry__venue">
+        <em>{entry.data.venue}</em>{citationDetails && `, ${citationDetails}`}.
+      </p>
+    )
+  }
+  {entry.data.isbn && <p class="publication-entry__detail">ISBN {entry.data.isbn}</p>}
+  {entry.data.note && <p class="publication-entry__detail">{entry.data.note}</p>}
+  {entry.data.abstract && <p>{entry.data.abstract}</p>}
+
+  <div class="entry-body">
+    <Content />
+  </div>
+
+  {
+    (doiHref || entry.data.url || entry.data.pdf) && (
+      <ul class="entry-links" aria-label={`Links for ${entry.data.title}`}>
+        {doiHref && (
+          <li>
+            <a href={doiHref}>DOI</a>
+          </li>
+        )}
+        {entry.data.url && (
+          <li>
+            <a href={resolveHref(entry.data.url)}>Publication page</a>
+          </li>
+        )}
+        {entry.data.pdf && (
+          <li>
+            <a href={resolveHref(entry.data.pdf)}>PDF</a>
+          </li>
+        )}
+      </ul>
+    )
+  }
+</article>
+
+<style>
+  .publication-entry {
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .publication-entry:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .publication-entry__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .publication-entry h2,
+  .publication-entry h3 {
+    max-width: 55rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .publication-entry__authors,
+  .publication-entry__venue,
+  .publication-entry__detail {
+    margin-bottom: var(--space-2);
+  }
+
+  .publication-entry__venue {
+    color: var(--color-text-muted);
+  }
+
+  .publication-entry__detail {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .entry-body {
+    max-width: var(--content-narrow);
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .entry-body :global(> :last-child) {
+    margin-bottom: 0;
+  }
+
+  .entry-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+</style>

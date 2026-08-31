@@ -1,0 +1,33 @@
+---
+import { siteConfig } from "@/config/site";
+
+interface Props {
+  showEmail?: boolean;
+  label?: string;
+}
+
+const { showEmail = true, label = "Professional links" } = Astro.props;
+const links = [
+  ...(showEmail
+    ? [{ label: "Email", url: `mailto:${siteConfig.email}` }]
+    : []),
+  ...siteConfig.socialLinks,
+];
+---
+
+<ul class="social-links" aria-label={label}>
+  {links.map((link) => <li><a href={link.url}>{link.label}</a></li>)}
+</ul>
+
+<style>
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+</style>

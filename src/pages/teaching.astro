@@ -1,0 +1,51 @@
+---
+import PageHeader from "@/components/PageHeader.astro";
+import ProfileEntry from "@/components/ProfileEntry.astro";
+import { academicProfile } from "@/data/profile";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Teaching"
+  description="Teaching, mentoring, and academic service by Nina Klimenkova at Worcester Polytechnic Institute."
+>
+  <PageHeader
+    eyebrow="Teaching & mentoring"
+    title="Teaching"
+    description="My teaching and mentoring work supports students as they develop practical data-science skills and make careful methodological choices."
+  />
+
+  <section class="page-section" aria-labelledby="teaching-experience">
+    <div class="layout-container profile-section">
+      <p class="eyebrow">Course support</p>
+      <h2 id="teaching-experience">Teaching experience</h2>
+      <ProfileEntry entry={academicProfile.teaching} />
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="mentoring">
+    <div class="layout-container profile-section">
+      <p class="eyebrow">Student research</p>
+      <h2 id="mentoring">Mentoring</h2>
+      <ProfileEntry entry={academicProfile.mentoring} />
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="academic-service">
+    <div class="layout-container profile-section">
+      <p class="eyebrow">Community</p>
+      <h2 id="academic-service">Academic service</h2>
+      <ProfileEntry entry={academicProfile.service} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .profile-section {
+    max-width: 62rem;
+  }
+
+  .profile-section > h2 {
+    margin-bottom: var(--space-5);
+  }
+</style>

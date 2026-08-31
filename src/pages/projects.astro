@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import PageHeader from "@/components/PageHeader.astro";
+import ProjectEntry from "@/components/ProjectEntry.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) ||
+    a.data.order - b.data.order ||
+    a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Research projects in human-centered table unionability, mentorship matching, and data mining."
+>
+  <PageHeader
+    eyebrow="Research projects"
+    title="Projects"
+    description="These projects connect my current work on human-centered data discovery with earlier research in human-in-the-loop systems and applied data mining."
+  />
+
+  <section class="page-section" aria-labelledby="project-list">
+    <div class="layout-container">
+      <h2 id="project-list" class="visually-hidden">Project list</h2>
+      <div class="project-grid">
+        {projects.map((entry) => <ProjectEntry entry={entry} headingLevel="h3" />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .project-grid :global(.project-entry:first-child) {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 46rem) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-grid :global(.project-entry:first-child) {
+      grid-column: auto;
+    }
+  }
+</style>

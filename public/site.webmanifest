@@ -1,0 +1,17 @@
+{
+  "name": "Nina Klimenkova — Data Science Research",
+  "short_name": "Nina Klimenkova",
+  "description": "Academic website for Nina Klimenkova's research in human-centered data discovery and collaborative intelligence.",
+  "start_url": "/personal_website/",
+  "scope": "/personal_website/",
+  "display": "standalone",
+  "background_color": "#f7f7f3",
+  "theme_color": "#132b3a",
+  "icons": [
+    {
+      "src": "/personal_website/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

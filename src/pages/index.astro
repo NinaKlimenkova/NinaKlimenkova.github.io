@@ -1,0 +1,294 @@
+---
+import { getCollection } from "astro:content";
+import NewsEntry from "@/components/NewsEntry.astro";
+import PublicationEntry from "@/components/PublicationEntry.astro";
+import SocialLinks from "@/components/SocialLinks.astro";
+import { siteConfig } from "@/config/site";
+import { media } from "@/data/media";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { withBase } from "@/utils/urls";
+
+const researchAreas = (await getCollection("research", ({ data }) => !data.draft && data.featured))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+const featuredPublications = (
+  await getCollection("publications", ({ data }) => !data.draft && data.featured)
+)
+  .sort((a, b) => b.data.year - a.data.year || a.data.order - b.data.order)
+  .slice(0, 3);
+const recentNews = (await getCollection("news", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout type="profile">
+  <section class="home-hero page-section">
+    <div class="layout-container home-hero__grid">
+      <div class="home-hero__content">
+        <p class="eyebrow">Human-Centered Data Discovery & AI</p>
+        <h1>{siteConfig.name}</h1>
+        <p class="home-hero__role">{siteConfig.role}</p>
+        <p class="home-hero__affiliation">{siteConfig.affiliation}</p>
+        <p class="lede">{siteConfig.researchStatement}</p>
+        <div class="button-row">
+          <a class="button-link" href={withBase("research/")}>Research</a>
+          <a class="button-link button-link--secondary" href={withBase("publications/")}>Publications</a>
+          <a class="button-link button-link--secondary" href={withBase(siteConfig.cvPath)} download>Download CV</a>
+        </div>
+        <div class="home-hero__links">
+          <SocialLinks label="Contact and scholarly profiles" />
+        </div>
+      </div>
+
+      <div class="home-hero__portrait">
+        <img
+          src={withBase(media.headshot.src)}
+          width={media.headshot.width}
+          height={media.headshot.height}
+          alt={media.headshot.alt}
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="research-focus">
+    <div class="layout-container">
+      <div class="section-heading section-heading--with-link">
+        <div>
+          <p class="eyebrow">Research focus</p>
+          <h2 id="research-focus">Questions that guide my work</h2>
+        </div>
+        <a href={withBase("research/")}>Explore all research areas</a>
+      </div>
+      <div class="focus-grid">
+        {
+          researchAreas.map((entry) => (
+            <article class="focus-entry">
+              <h3>{entry.data.title}</h3>
+              <p>{entry.data.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="selected-publications">
+    <div class="layout-container publication-section">
+      <div class="section-heading section-heading--with-link">
+        <div>
+          <p class="eyebrow">Selected publications</p>
+          <h2 id="selected-publications">Recent and central work</h2>
+        </div>
+        <a href={withBase("publications/")}>View all publications</a>
+      </div>
+      {featuredPublications.map((entry) => <PublicationEntry entry={entry} headingLevel="h3" />)}
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="academic-profile">
+    <div class="layout-container profile-grid">
+      <div>
+        <p class="eyebrow">At a glance</p>
+        <h2 id="academic-profile">Academic profile</h2>
+        <p class="lede">
+          My work connects data discovery with human judgment and computational
+          support, with an emphasis on reliable collaboration between people and AI.
+        </p>
+      </div>
+      <dl class="profile-list">
+        <div>
+          <dt>Program</dt>
+          <dd>{siteConfig.program}, {siteConfig.affiliation}</dd>
+        </div>
+        <div>
+          <dt>Adviser</dt>
+          <dd>{siteConfig.adviser}</dd>
+        </div>
+        <div>
+          <dt>Principal themes</dt>
+          <dd>Table unionability, human-in-the-loop systems, and metacognitive signals</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  {
+    recentNews.length > 0 && (
+      <section class="page-section" aria-labelledby="recent-updates">
+        <div class="layout-container updates-grid">
+          <div>
+            <p class="eyebrow">News</p>
+            <h2 id="recent-updates">Recent updates</h2>
+          </div>
+          <div>{recentNews.map((entry) => <NewsEntry entry={entry} headingLevel="h3" />)}</div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .home-hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .home-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+    align-items: center;
+    gap: clamp(var(--space-7), 6vw, var(--space-9));
+    min-height: clamp(34rem, 72vh, 48rem);
+  }
+
+  .home-hero__content {
+    max-width: 46rem;
+  }
+
+  .home-hero h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  .home-hero__role {
+    margin-bottom: 0;
+    color: var(--color-accent-strong);
+    font-size: var(--text-xl);
+    font-weight: 700;
+  }
+
+  .home-hero__affiliation {
+    margin-bottom: var(--space-5);
+    color: var(--color-text-muted);
+  }
+
+  .home-hero__portrait {
+    justify-self: end;
+    width: min(100%, 25rem);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .home-hero__portrait img {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius-md) - var(--space-1));
+  }
+
+  .home-hero__links {
+    margin-top: var(--space-5);
+  }
+
+  .section-heading {
+    max-width: var(--content-narrow);
+    margin-bottom: var(--space-6);
+  }
+
+  .section-heading--with-link {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    max-width: none;
+    gap: var(--space-5);
+  }
+
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-block: 1px solid var(--color-border);
+  }
+
+  .focus-entry {
+    padding: var(--space-6);
+  }
+
+  .focus-entry + .focus-entry {
+    border-left: 1px solid var(--color-border);
+  }
+
+  .focus-entry p {
+    margin-bottom: 0;
+    color: var(--color-text-muted);
+  }
+
+  .publication-section {
+    max-width: 64rem;
+  }
+
+  .profile-grid,
+  .updates-grid {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr);
+    gap: var(--space-8);
+  }
+
+  .profile-list {
+    margin: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .profile-list div {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .profile-list dt {
+    color: var(--color-accent-strong);
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+
+  .profile-list dd {
+    margin: 0;
+  }
+
+  @media (max-width: 50rem) {
+    .home-hero__grid {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .home-hero__portrait {
+      justify-self: start;
+      width: min(100%, 22rem);
+    }
+
+    .focus-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .focus-entry + .focus-entry {
+      border-top: 1px solid var(--color-border);
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .section-heading--with-link,
+    .profile-grid,
+    .updates-grid {
+      display: block;
+    }
+
+    .section-heading--with-link > a {
+      display: inline-block;
+      margin-top: var(--space-3);
+    }
+
+    .profile-list {
+      margin-top: var(--space-6);
+    }
+
+    .profile-list div {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>
