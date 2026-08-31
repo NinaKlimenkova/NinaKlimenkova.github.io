@@ -23,7 +23,7 @@ export const siteConfig = {
   program: "Data Science Program",
   adviser: "Dr. Roee Shraga",
   researchStatement:
-    "I am a PhD student in Data Science at Worcester Polytechnic Institute, advised by Dr. Roee Shraga. My research focuses on human-centered data discovery and integration, especially how people and large language models judge table unionability. I study how metacognitive signals—including confidence, decision time, and interaction traces—can improve label calibration, union search, and collaborative intelligence.",
+    "I am a PhD student in Data Science at Worcester Polytechnic Institute, advised by Dr. Roee Shraga. My research spans human-centered and algorithmic approaches to data discovery and integration, with a focus on how people, models, and systems judge table unionability. I study metacognitive signals—confidence, decision time, calibration—as a lens for improving evaluation, retrieval, and decision-making across data discovery tasks, including graded and uncertainty-aware evaluation frameworks, cost-aware system design, and emerging agentic approaches to exploring data lakes.",
   socialLinks: [
     {
       label: "LinkedIn",
