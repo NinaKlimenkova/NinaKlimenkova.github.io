@@ -2,7 +2,7 @@
 
 This is Nina Klimenkova’s statically generated academic Data Science website. It
 uses Astro, TypeScript, Markdown/MDX content collections, and plain CSS, and it is
-deployed to GitHub Pages at the `/personal_website/` repository path. Keep the
+deployed to GitHub Pages at the root `https://ninaklimenkova.github.io/` URL. Keep the
 implementation small, static, accessible, and easy to maintain.
 
 1. Prefer static Astro components.

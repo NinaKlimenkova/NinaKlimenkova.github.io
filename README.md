@@ -13,8 +13,9 @@ projects, teaching and mentoring, a web CV summary, and a downloadable CV.
 - GitHub Actions and GitHub Pages
 - No React, Tailwind, CMS, database, API, or server runtime
 
-The production site uses the repository Pages path `/personal_website/`. Internal
-routes and public assets must use `withBase()` from `src/utils/urls.ts`.
+The production site is published from the `NinaKlimenkova.github.io` user-site
+repository at `https://ninaklimenkova.github.io/`. Internal routes and public
+assets use `withBase()` from `src/utils/urls.ts`.
 
 ## Local development
 
@@ -30,7 +31,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:4321/personal_website/`.
+Open `http://localhost:4321/`.
 
 Run the required validation and production build:
 
@@ -116,7 +117,7 @@ Astro check and production build, uploads `dist/`, and deploys through the
 
 In the GitHub repository, set **Settings → Pages → Build and deployment → Source**
 to **GitHub Actions**. The workflow deploys only after the changes are committed
-and pushed.
+and pushed to `main`, publishing the site at `https://ninaklimenkova.github.io/`.
 
 ## Directory structure
 

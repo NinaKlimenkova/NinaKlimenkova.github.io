@@ -2,8 +2,7 @@ import mdx from "@astrojs/mdx";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://opadun1.github.io",
-  base: "/personal_website",
+  site: "https://ninaklimenkova.github.io",
   output: "static",
   integrations: [mdx()],
 });
