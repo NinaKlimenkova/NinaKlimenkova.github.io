@@ -10,12 +10,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   description="Teaching, mentoring, and academic service by Nina Klimenkova at Worcester Polytechnic Institute."
 >
   <PageHeader
+    eyebrow="Teaching & mentoring"
     title="Teaching"
     description="My teaching and mentoring work supports students as they develop practical data-science skills and make careful methodological choices."
   />
 
   <section class="page-section" aria-labelledby="teaching-experience">
     <div class="layout-container profile-section">
+      <p class="eyebrow">Course support</p>
       <h2 id="teaching-experience">Teaching experience</h2>
       <ProfileEntry entry={academicProfile.teaching} />
     </div>
@@ -23,6 +25,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
   <section class="page-section" aria-labelledby="mentoring">
     <div class="layout-container profile-section">
+      <p class="eyebrow">Student research</p>
       <h2 id="mentoring">Mentoring</h2>
       <ProfileEntry entry={academicProfile.mentoring} />
     </div>
@@ -30,6 +33,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
   <section class="page-section" aria-labelledby="academic-service">
     <div class="layout-container profile-section">
+      <p class="eyebrow">Community</p>
       <h2 id="academic-service">Academic service</h2>
       <ProfileEntry entry={academicProfile.service} />
     </div>

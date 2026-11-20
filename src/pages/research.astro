@@ -20,12 +20,14 @@ const relatedProjects = (
   description="Research on human-centered data discovery, table unionability, collaborative intelligence, and metacognitive signals."
 >
   <PageHeader
+    eyebrow="Research"
     title="Human-centered data discovery"
     description="I study how human judgments, behavioral signals, machine learning, and large language models can support more reliable data discovery and integration."
   />
 
   <section class="page-section" aria-labelledby="research-areas">
     <div class="layout-container">
+      <p class="eyebrow">Areas of inquiry</p>
       <h2 id="research-areas" class="section-title">Research areas</h2>
       {researchAreas.map((entry) => <ResearchAreaEntry entry={entry} />)}
     </div>
@@ -34,6 +36,7 @@ const relatedProjects = (
   <section class="page-section" aria-labelledby="research-in-practice">
     <div class="layout-container">
       <div class="section-copy">
+        <p class="eyebrow">Research in practice</p>
         <h2 id="research-in-practice">Presentations and academic events</h2>
         <p>Selected moments from research presentations, conferences, and academic milestones.</p>
       </div>
@@ -47,6 +50,7 @@ const relatedProjects = (
     relatedProjects.length > 0 && (
       <section class="page-section" aria-labelledby="related-projects">
         <div class="layout-container">
+          <p class="eyebrow">Current work</p>
           <h2 id="related-projects" class="section-title">Related project</h2>
           <div class="related-project">
             {relatedProjects.map((entry) => <ProjectEntry entry={entry} headingLevel="h3" />)}
