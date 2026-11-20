@@ -12,7 +12,12 @@ interface Props {
 const { entry, headingLevel = "h2" } = Astro.props;
 const { Content } = await render(entry);
 const Heading = headingLevel;
-const statusLabel = entry.data.status.replace("-", " ");
+const statusLabels = {
+  active: "Active",
+  completed: "Completed",
+  planned: "Planned",
+  "on-hold": "On hold",
+};
 const formatYear = (date: Date) =>
   new Intl.DateTimeFormat("en", { year: "numeric", timeZone: "UTC" }).format(date);
 const derivedDateRange = entry.data.startDate
@@ -27,12 +32,12 @@ function resolveHref(href: string): string {
 
 <article class="project-entry">
   <div class="project-entry__meta">
-    <span class="status-badge">{statusLabel}</span>
+    <span class="status-badge">{statusLabels[entry.data.status]}</span>
     {dateRange && <span>{dateRange}</span>}
   </div>
 
   <Heading>{entry.data.title}</Heading>
-  <p class="project-entry__summary">{entry.data.summary}</p>
+  <p>{entry.data.summary}</p>
 
   <div class="entry-body">
     <Content />
@@ -72,27 +77,17 @@ function resolveHref(href: string): string {
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-3);
     margin-bottom: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: var(--text-xs);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
 
   .status-badge {
     padding: var(--space-1) var(--space-2);
     border-radius: 999px;
     background: var(--color-accent-soft);
-    color: var(--color-accent-strong);
-    font-weight: 700;
   }
 
   .project-entry h2,
   .project-entry h3 {
     margin-bottom: var(--space-3);
-  }
-
-  .project-entry__summary {
-    color: var(--color-text-muted);
   }
 
   .entry-body {
@@ -101,16 +96,5 @@ function resolveHref(href: string): string {
 
   .entry-body :global(> :last-child) {
     margin-bottom: 0;
-  }
-
-  .entry-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin: var(--space-4) 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: var(--text-sm);
-    font-weight: 700;
   }
 </style>

@@ -13,10 +13,7 @@ import { withBase } from "@/utils/urls";
   <section class="page-section" aria-labelledby="cv-download">
     <div class="layout-container">
       <div class="cv-panel">
-        <div>
-          <p class="eyebrow">Complete record</p>
-          <h1 id="cv-download">Curriculum vitae</h1>
-        </div>
+        <h1 id="cv-download">Curriculum vitae</h1>
         <a class="button-link" href={withBase(siteConfig.cvPath)} download>Download CV (PDF)</a>
       </div>
     </div>
@@ -24,14 +21,12 @@ import { withBase } from "@/utils/urls";
 
   <header class="page-section">
     <div class="layout-container cv-section">
-      <p class="eyebrow">Web version</p>
       <h2>CV summary</h2>
     </div>
   </header>
 
   <section class="page-section" aria-labelledby="education">
     <div class="layout-container cv-section">
-      <p class="eyebrow">Academic background</p>
       <h2 id="education">Education</h2>
       {academicProfile.education.map((entry) => <ProfileEntry entry={entry} />)}
     </div>
@@ -39,7 +34,6 @@ import { withBase } from "@/utils/urls";
 
   <section class="page-section" aria-labelledby="research-experience">
     <div class="layout-container cv-section">
-      <p class="eyebrow">Current appointment</p>
       <h2 id="research-experience">Research experience</h2>
       <ProfileEntry entry={academicProfile.researchRole} />
     </div>
@@ -47,7 +41,6 @@ import { withBase } from "@/utils/urls";
 
   <section class="page-section" aria-labelledby="service-mentoring">
     <div class="layout-container cv-section">
-      <p class="eyebrow">Selected activities</p>
       <h2 id="service-mentoring">Service and mentoring</h2>
       <ProfileEntry entry={academicProfile.mentoring} />
       <ProfileEntry entry={academicProfile.service} />
@@ -56,7 +49,6 @@ import { withBase } from "@/utils/urls";
 
   <section class="page-section" aria-labelledby="skills">
     <div class="layout-container cv-section">
-      <p class="eyebrow">Technical profile</p>
       <h2 id="skills">Programming languages and tools</h2>
       <dl class="skills-list">
         <div>
@@ -84,14 +76,12 @@ import { withBase } from "@/utils/urls";
     background: var(--color-surface);
   }
 
-  .cv-panel > div,
   .cv-section {
     max-width: 62rem;
   }
 
   .cv-panel h1 {
     margin-bottom: 0;
-    font-size: var(--text-2xl);
   }
 
   .cv-section > h2 {
@@ -109,11 +99,6 @@ import { withBase } from "@/utils/urls";
     gap: var(--space-5);
     padding-block: var(--space-5);
     border-bottom: 1px solid var(--color-border);
-  }
-
-  .skills-list dt {
-    color: var(--color-accent-strong);
-    font-weight: 700;
   }
 
   .skills-list dd {

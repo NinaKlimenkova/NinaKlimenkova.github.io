@@ -19,7 +19,7 @@ function isCurrent(path: string): boolean {
   <div class="site-header__inner layout-container">
     <a class="site-identity" href={withBase()} aria-label={`${siteConfig.name}, home`}>
       <span class="site-identity__name">{siteConfig.name}</span>
-      <span class="site-identity__role">{siteConfig.role}</span>
+      <span>{siteConfig.role}</span>
     </a>
 
     <nav class="site-nav" aria-label="Primary navigation">
@@ -59,22 +59,12 @@ function isCurrent(path: string): boolean {
   .site-identity {
     display: grid;
     flex: 0 0 auto;
-    color: var(--color-text);
+    color: inherit;
     text-decoration: none;
   }
 
   .site-identity__name {
-    font-family: var(--font-heading);
-    font-size: var(--text-lg);
-    font-weight: 700;
-    line-height: var(--leading-tight);
-  }
-
-  .site-identity__role {
-    color: var(--color-text-muted);
-    font-size: var(--text-xs);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-weight: var(--weight-emphasis);
   }
 
   .site-nav__list {
@@ -91,16 +81,15 @@ function isCurrent(path: string): boolean {
     display: inline-block;
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-sm);
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-    font-weight: 600;
+    color: inherit;
     text-decoration: none;
   }
 
   .site-nav__link:hover,
   .site-nav__link[aria-current="page"] {
-    color: var(--color-accent-strong);
+    color: var(--color-accent);
     background: var(--color-accent-soft);
+    text-decoration: underline;
   }
 
   @media (max-width: 48rem) {

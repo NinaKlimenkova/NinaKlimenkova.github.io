@@ -24,6 +24,14 @@ const typeLabels: Record<CollectionEntry<"publications">["data"]["publicationTyp
   other: "Other",
 };
 
+const statusLabels = {
+  published: "Published",
+  accepted: "Accepted",
+  submitted: "Submitted",
+  "in-review": "In review",
+  preprint: "Preprint",
+};
+
 const doiHref = entry.data.doi
   ? entry.data.doi.startsWith("http")
     ? entry.data.doi
@@ -51,7 +59,7 @@ function resolveHref(href: string): string {
   <div class="publication-entry__meta">
     <span>{entry.data.year}</span>
     <span>{typeLabels[entry.data.publicationType]}</span>
-    {entry.data.status && <span>{entry.data.status.replace("-", " ")}</span>}
+    {entry.data.status && <span>{statusLabels[entry.data.status]}</span>}
   </div>
 
   <Heading>{entry.data.title}</Heading>
@@ -118,10 +126,6 @@ function resolveHref(href: string): string {
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-4);
     margin-bottom: var(--space-3);
-    color: var(--color-text-muted);
-    font-size: var(--text-xs);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
 
   .publication-entry h2,
@@ -136,33 +140,12 @@ function resolveHref(href: string): string {
     margin-bottom: var(--space-2);
   }
 
-  .publication-entry__venue {
-    color: var(--color-text-muted);
-  }
-
-  .publication-entry__detail {
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
   .entry-body {
     max-width: var(--content-narrow);
     margin-top: var(--space-4);
-    color: var(--color-text-muted);
   }
 
   .entry-body :global(> :last-child) {
     margin-bottom: 0;
-  }
-
-  .entry-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin: var(--space-4) 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: var(--text-sm);
-    font-weight: 700;
   }
 </style>
